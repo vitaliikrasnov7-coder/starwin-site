@@ -9,14 +9,27 @@
 </head>
 <body>
 
-<div id="../components/logoContainer"></div>
-<div id="../components/casesContainer"></div>
-<div id="../components/caseOpenContainer"></div>
+<div id="logoContainer"></div>
+<div id="casesContainer"></div>
+<div id="caseOpenContainer"></div>
 
+  <script>
+function loadComponent(id, path) {
+  fetch(path)
+    .then(res => res.text())
+    .then(html => document.getElementById(id).innerHTML = html)
+    .catch(err => console.error("Ошибка загрузки компонента:", err));
+}
+
+loadComponent('logoContainer', '../components/logo.html');
+loadComponent('casesContainer', '../components/cases.html');
+loadComponent('caseOpenContainer', '../components/caseOpen.html');
+</script>
 <script src="../js/loader.js"></script>
 <script src="../js/scroll.js"></script>
 <script src="../js/data_free_case.js"></script>
 <script src="../js/free_case.js"></script>
 
 </body>
+
 </html>
