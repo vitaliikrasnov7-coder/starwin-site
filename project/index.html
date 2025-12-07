@@ -304,6 +304,7 @@
 <div id="profileContainer"></div>
 
 <script>
+
 /* ========== ПРОФИЛЬ И TELEGRAM ID ========== */
 const urlParams = new URLSearchParams(window.location.search);
 const TELEGRAM_USER_ID = urlParams.get("id");
@@ -315,7 +316,7 @@ if(TELEGRAM_USER_ID){
       <div>ID: ${TELEGRAM_USER_ID}</div>
     `;
 }else{
-    profileContainer.innerHTML = `<div style="color:#fff">Профиль не найден</div>`;
+    profileContainer.innerHTML = <div style="color:#fff">Профиль не найден</div>;
 }
 
 /* ========== ДАННЫЕ ДЛЯ КЕЙСА ========== */
@@ -332,16 +333,20 @@ const FREE_CASE_ITEMS = [
   { name:"Red 9",rarity:"red",img:"../IMG/IMG_2003.WEBP" },
 ];
 
-/* ========== АНИМАЦИЯ ШАПКИ ========== */
+/* ========== АНИМАЦИЯ ШАПКИ (исправлено) ========== */
 const logoBar = document.getElementById("logoBar");
 const casesBar = document.getElementById("casesBar");
 
 window.addEventListener("scroll", ()=>{
   let y = Math.min(window.scrollY,200);
   let o = 1 - y/200;
-  logoBar.style.transform = `translate(-50%, -${y}px)`;
+
+  // Лого по центру
+  logoBar.style.transform = translate(-50%, -${y}px);
   logoBar.style.opacity = o;
-  casesBar.style.transform = `translate(-50%, -${y}px)`;
+
+  // Кейсы только по Y, центрирование сохраняется через flex
+  casesBar.style.transform = translateY(-${y}px);
   casesBar.style.opacity = o;
 });
 
