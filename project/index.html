@@ -2,56 +2,64 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>StarW1N КЕЙСЫ</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
 <style>
-  body{ margin:0; background:#0a0f1a; font-family:'Montserrat',sans-serif; height:200vh; }
+  /* Динамическая высота экрана */
+  :root { --vh: 1vh; }
+  body{ 
+    margin:0; 
+    background:#0a0f1a; 
+    font-family:'Montserrat',sans-serif; 
+    height: calc(var(--vh, 1vh) * 100); 
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    overflow-x:hidden;
+  }
 
   /* Логотип */
-  .logo-bar{ position:fixed; top:0; left:0; width:100%; padding:20px 0; display:flex; justify-content:center; background:#0a0f1a; z-index:999; transition:transform .1s,opacity .1s;}
-  .logo{ font-weight:900; font-size:60px; letter-spacing:-4px; transform:skewX(-12deg); user-select:none; }
+  .logo-bar{ position:fixed; top:0; left:0; width:100%; padding:2vh 0; display:flex; justify-content:center; background:#0a0f1a; z-index:999; transition:transform .1s,opacity .1s;}
+  .logo{ font-weight:900; font-size:6vw; letter-spacing:-0.2vw; transform:skewX(-12deg); user-select:none; }
   .gradient-text{ background:linear-gradient(90deg,#4d9fff,#5d6bff,#904bff); -webkit-background-clip:text; color:transparent;}
   .white1{ color:#fff; }
 
   /* Кейсы */
-  .cases-bar{ position:fixed; top:150px; left:0; width:100%; display:flex; justify-content:center; gap:20px; z-index:998; transition:transform .1s,opacity .1s;}
-  .case{ width:150px; height:200px; background:#1a1f35; border-radius:15px; display:flex; flex-direction:column; align-items:center; padding:10px; cursor:pointer;}
-  .case img.case-image{ width:100%; height:100px; object-fit:cover; margin-bottom:10px;}
-  .case .case-name{ color:#fff; font-size:20px; font-weight:700; }
+  .cases-bar{ position:fixed; top:20vh; left:0; width:100%; display:flex; justify-content:center; gap:4vw; z-index:998; transition:transform .1s,opacity .1s;}
+  .case{ width:20vw; max-width:150px; height:28vh; max-height:200px; background:#1a1f35; border-radius:1.5vw; display:flex; flex-direction:column; align-items:center; padding:1vw; cursor:pointer;}
+  .case img.case-image{ width:100%; height:60%; object-fit:cover; margin-bottom:1vh; border-radius:1vw;}
+  .case .case-name{ color:#fff; font-size:3vw; text-align:center; font-weight:700; }
 
   /* Открытый кейс */
-  .case-opened{ position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:520px; background:#1a1f35; border-radius:20px; display:flex; flex-direction:column; align-items:center; padding:25px; z-index:1000; }
-  .case-logo{ position:absolute; top:18px; left:18px; cursor:pointer; }
-  .case-logo .logo{ font-size:35px; transform:skewX(-12deg); }
+  .case-opened{ position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90vw; max-width:520px; background:#1a1f35; border-radius:3vw; display:flex; flex-direction:column; align-items:center; padding:5vw; z-index:1000; }
+  .case-logo{ position:absolute; top:2vw; left:2vw; cursor:pointer; }
+  .case-logo .logo{ font-size:5vw; transform:skewX(-12deg); }
 
-  .open-button{ margin-top:16px; padding:12px 26px; background:#333; color:#fff; border:none; border-radius:12px; font-size:17px; cursor:pointer; }
+  .open-button{ margin-top:3vh; padding:2vh 5vw; background:#333; color:#fff; border:none; border-radius:2vw; font-size:4vw; cursor:pointer; }
   .open-button:disabled{ opacity:.5; cursor:not-allowed; }
 
-  .items-list{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:18px; }
-  .item-slot{ width:60px; height:60px; background:#333; border-radius:10px; display:flex; justify-content:center; align-items:center; position:relative; color:#fff; font-size:10px; text-align:center; padding:4px; }
-  .rarity{ position:absolute; bottom:5px; left:50%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; }
+  .items-list{ display:flex; flex-wrap:wrap; justify-content:center; gap:2vw; margin-top:3vh; }
+  .item-slot{ width:12vw; max-width:60px; height:16vw; max-height:85px; display:flex; flex-direction:column; align-items:center; margin:1vw; position:relative; }
+  .item-slot img{ width:100%; height:100%; border-radius:1vw; object-fit:cover; }
+  .rarity{ position:absolute; bottom:5%; left:50%; transform:translateX(-50%); width:2vw; height:2vw; border-radius:50%; }
 
-  /* Рулетка */
-  .roulette{ width:500px; height:100px; overflow:hidden; border-radius:12px; margin-top:16px; background:#000; position:relative; border:2px solid rgba(255,255,255,.04);}
-  .roulette::after{ content:""; position:absolute; top:0; bottom:0; left:50%; width:4px; transform:translateX(-50%); background:rgba(255,255,255,.06); pointer-events:none; }
-  .roulette-track{ display:flex; position:absolute; left:0; top:0; height:130px; will-change: transform; }
-  .roulette-item{ width:100px; height:100px; display:flex; justify-content:center; align-items:center; padding:6px; box-sizing:border-box; }
-  .roulette-item img{ width:100%; height:100%; object-fit:cover; border-radius:8px; }
-
-  /* Результат */
-  .result-block{ margin-top:18px; display:none; flex-direction:column; align-items:center; }
-  .result-title{ color:#fff; font-size:22px; font-weight:700; }
-  .result-actions{ display:flex; gap:14px; margin-top:12px; }
-  .result-btn{ padding:10px 18px; border:none; border-radius:10px; cursor:pointer; font-weight:700; }
-  .sell{ background:#ff4e4e; color:#fff; }
-  .keep{ background:#4eff7a; color:#000; }
-
-  .item-slot{ width:60px; height:85px; display:flex; flex-direction:column; align-items:center; margin:5px; position:relative; }
-  .item-slot img{ width:60px; height:85px; border-radius:10px; object-fit:cover; }
   .rarity.white{ background-color:white; }
   .rarity.red{ background-color:red; }
 
+  /* Рулетка */
+  .roulette{ width:80vw; max-width:500px; height:20vw; max-height:100px; overflow:hidden; border-radius:2vw; margin-top:3vh; background:#000; position:relative; border:2px solid rgba(255,255,255,.04);}
+  .roulette::after{ content:""; position:absolute; top:0; bottom:0; left:50%; width:0.8vw; transform:translateX(-50%); background:rgba(255,255,255,.06); pointer-events:none; }
+  .roulette-track{ display:flex; position:absolute; left:0; top:0; height:100%; will-change: transform; }
+  .roulette-item{ width:20vw; max-width:100px; height:100%; display:flex; justify-content:center; align-items:center; padding:1vw; box-sizing:border-box; }
+  .roulette-item img{ width:100%; height:100%; object-fit:cover; border-radius:1vw; }
+
+  /* Результат */
+  .result-block{ margin-top:3vh; display:none; flex-direction:column; align-items:center; }
+  .result-title{ color:#fff; font-size:5vw; max-font-size:22px; font-weight:700; text-align:center; }
+  .result-actions{ display:flex; gap:3vw; margin-top:2vh; flex-wrap:wrap; justify-content:center; }
+  .result-btn{ padding:1.5vh 4vw; border:none; border-radius:2vw; cursor:pointer; font-weight:700; font-size:4vw; max-font-size:16px; }
+  .sell{ background:#ff4e4e; color:#fff; }
+  .keep{ background:#4eff7a; color:#000; }
 </style>
 </head>
 <body>
@@ -62,15 +70,20 @@
 
 <div class="cases-bar" id="casesBar">
   <div class="case" id="freeCase">
-    <img class="case-image" src="../IMG/IMG_2086.WEBP" style="width:110%; height:100%; object-fit:cover; border-radius:10px;"  alt="FREE">
+    <img class="case-image" src="../IMG/IMG_2086.WEBP" alt="FREE">
     <div class="case-name">FREE</div>
   </div>
 </div>
 
-<div id="profileContainer"></div>
-
 <script>
-/* Анимация шапки при скролле */
+/* Динамическая высота */
+function setFullHeight() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+window.addEventListener('resize', setFullHeight);
+setFullHeight();
+
+/* Анимация шапки */
 const logoBar = document.getElementById("logoBar");
 const casesBar = document.getElementById("casesBar");
 window.addEventListener("scroll", ()=>{
@@ -82,7 +95,7 @@ window.addEventListener("scroll", ()=>{
     casesBar.style.opacity = o;
 });
 
-/* Данные для кейса */
+/* Данные кейса */
 const FREE_CASE_ITEMS = [
     { name: "Happy Brownie", rarity: "white", img: "../IMG/IMG_2046.WEBP", chance: 99.91 },
     { name: "Red 1", rarity: "red", img: "../IMG/IMG_2043.WEBP", chance: 0.01 },
@@ -108,7 +121,7 @@ document.getElementById("freeCase").addEventListener("click", ()=>{
       <div class="case-logo" id="backLogo">
         <div class="logo"><span class="gradient-text">StarW</span><span class="white1">1</span><span class="gradient-text">N</span></div>
       </div>
-      <div style="color:#fff;font-size:26px;font-weight:700;margin-top:22px;">FREE CASE</div>
+      <div style="color:#fff;font-size:5vw;font-weight:700;margin-top:3vh;text-align:center;">FREE CASE</div>
       <div class="roulette" id="roulette">
         <div class="roulette-track" id="rouletteTrack"></div>
       </div>
@@ -166,12 +179,6 @@ document.getElementById("freeCase").addEventListener("click", ()=>{
         rouletteTrack.appendChild(d);
     });
 
-    function getItemWidth(){
-        const sample = document.querySelector(".roulette-item");
-        if(!sample) return 140;
-        return Math.round(sample.getBoundingClientRect().width);
-    }
-
     /* Запуск рулетки */
     let isSpinning = false;
     startOpen.addEventListener("click", async ()=>{
@@ -180,7 +187,7 @@ document.getElementById("freeCase").addEventListener("click", ()=>{
         startOpen.disabled = true;
         resultBlock.style.display = "none";
 
-        const itemWidth = getItemWidth();
+        const itemWidth = rouletteTrack.querySelector(".roulette-item").getBoundingClientRect().width;
         const visibleWidth = rouletteEl.getBoundingClientRect().width;
         const centerOffsetCorrection = Math.round((visibleWidth - itemWidth)/2);
 
@@ -233,16 +240,7 @@ document.getElementById("freeCase").addEventListener("click", ()=>{
         }, 5200);
     });
 
-    /* Анимация кейса при скролле */
-    const onScrollCase = ()=> {
-        let offset = Math.min(window.scrollY, 300);
-        openCase.style.transform = `translate(-50%, calc(-50% - ${offset}px))`;
-        openCase.style.opacity = 1 - offset/600;
-    };
-    window.addEventListener("scroll", onScrollCase);
-
 });
 </script>
-
 </body>
 </html>
