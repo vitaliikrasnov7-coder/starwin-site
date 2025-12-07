@@ -317,6 +317,17 @@ window.addEventListener("scroll", ()=>{
   casesBar.style.opacity = o;
 });
 
+const params = new URLSearchParams(window.location.search);
+const userId = params.get("id");
+const name = params.get("name");
+const username = params.get("username");
+
+document.getElementById("username").textContent = name;
+document.getElementById("avatar").src = username
+  ? https://t.me/i/userpic/320/${username}.jpg
+  : "default-avatar.png"; // fallback если нет username
+
+
 /* ========== ДАННЫЕ ДЛЯ КЕЙСА ========== */
 const FREE_CASE_ITEMS = [
   { name:"Happy Brownie",rarity:"white",img:"../IMG/IMG_2046.WEBP" },
@@ -330,16 +341,6 @@ const FREE_CASE_ITEMS = [
   { name:"Red 8",rarity:"red",img:"../IMG/IMG_2004.WEBP" },
   { name:"Red 9",rarity:"red",img:"../IMG/IMG_2003.WEBP" },
 ];
-
-const params = new URLSearchParams(window.location.search);
-const userId = params.get("id");
-const name = params.get("name");
-const username = params.get("username");
-
-document.getElementById("username").textContent = name;
-document.getElementById("avatar").src = username
-  ? https://t.me/i/userpic/320/${username}.jpg
-  : "default-avatar.png"; // fallback если нет username
 
 /* ========== ОТКРЫТИЕ КЕЙСА ========== */
 document.getElementById("freeCase").addEventListener("click",()=>{
