@@ -331,7 +331,15 @@ const FREE_CASE_ITEMS = [
   { name:"Red 9",rarity:"red",img:"../IMG/IMG_2003.WEBP" },
 ];
 
+const params = new URLSearchParams(window.location.search);
+const userId = params.get("id");
+const name = params.get("name");
+const username = params.get("username");
 
+document.getElementById("username").textContent = name;
+document.getElementById("avatar").src = username
+  ? https://t.me/i/userpic/320/${username}.jpg
+  : "default-avatar.png"; // fallback если нет username
 
 /* ========== ОТКРЫТИЕ КЕЙСА ========== */
 document.getElementById("freeCase").addEventListener("click",()=>{
