@@ -216,11 +216,28 @@
   .sell{ background:#ff4e4e; color:#fff; }
   .keep{ background:#4eff7a; color:#000; }
 
+  /* ---------- ПРОФИЛЬ ---------- */
+  #profileContainer{
+      position:fixed;
+      top:70px;
+      right:20px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      color:#fff;
+      z-index:999;
+  }
+  #profileContainer img{
+      width:60px;
+      height:60px;
+      border-radius:50%;
+      margin-bottom:5px;
+  }
+
   /* ——————————————————————————
      АДАПТИВНОСТЬ ДЛЯ МОБИЛОК
      —————————————————————————— */
 
-  /* ≤ 900px — планшеты */
   @media (max-width: 900px){
     .logo{ font-size:45px; }
     .cases-bar{ top:120px; }
@@ -229,48 +246,21 @@
     .roulette{ width:90%; }
   }
 
-  /* ≤ 600px — телефоны */
   @media (max-width: 600px){
     .logo{ font-size:32px; }
     .logo-bar{ padding:12px 0; }
     .cases-bar{ top:100px; gap:12px; }
-
-    .case{
-      width:120px;
-      height:160px;
-      padding:8px;
-    }
+    .case{ width:120px; height:160px; padding:8px; }
     .case .case-name{ font-size:16px; }
-
-    .case-opened{
-      width:95%;
-      padding:14px;
-      border-radius:14px;
-    }
+    .case-opened{ width:95%; padding:14px; border-radius:14px; }
     .case-logo .logo{ font-size:26px; }
-
-    .roulette{
-      width:100%;
-      height:110px;
-    }
-    .roulette-item{
-      width:110px;
-      height:110px;
-    }
-
-    .open-button{
-      padding:10px 20px;
-      font-size:15px;
-    }
-
+    .roulette{ width:100%; height:110px; }
+    .roulette-item{ width:110px; height:110px; }
+    .open-button{ padding:10px 20px; font-size:15px; }
     .result-title{ font-size:18px; }
-    .result-btn{
-      padding:8px 14px;
-      font-size:14px;
-    }
+    .result-btn{ padding:8px 14px; font-size:14px; }
   }
 
-  /* ≤ 400px — маленькие iPhone */
   @media (max-width: 400px){
     .logo{ font-size:26px; }
     .case{ width:100px; height:140px; }
@@ -280,7 +270,6 @@
   }
 
 </style>
-
 </head>
 <body>
 
@@ -301,9 +290,21 @@
 
 <div id="profileContainer"></div>
 
-
-
 <script>
+/* ========== ПРОФИЛЬ И TELEGRAM ID ========== */
+const urlParams = new URLSearchParams(window.location.search);
+const TELEGRAM_USER_ID = urlParams.get("id"); // получаем ID из бота
+
+const profileContainer = document.getElementById("profileContainer");
+if(TELEGRAM_USER_ID){
+    profileContainer.innerHTML = `
+      <img src="https://t.me/i/userpic/320/${TELEGRAM_USER_ID}.jpg" alt="Avatar">
+      <div>ID: ${TELEGRAM_USER_ID}</div>
+    `;
+}else{
+    profileContainer.innerHTML = `<div style="color:#fff">Профиль не найден</div>`;
+}
+
 /* ========== АНИМАЦИЯ ШАПКИ ========== */
 const logoBar = document.getElementById("logoBar");
 const casesBar = document.getElementById("casesBar");
@@ -331,8 +332,16 @@ const FREE_CASE_ITEMS = [
   { name:"Red 9",rarity:"red",img:"../IMG/IMG_2003.WEBP" },
 ];
 
-/* ========== ОТКРЫТИЕ КЕЙСА ========== */
+/* ========== ОТКРЫТИЕ КЕЙСА С 24 ЧАСАМИ ========== */
 document.getElementById("freeCase").addEventListener("click",()=>{
+
+  const lastOpen = localStorage.getItem(`freeCase_${TELEGRAM_USER_ID}`);
+  const now = Date.now();
+  if(lastOpen && now - lastOpen < 24*60*60*1000){
+      alert("Кейс можно открыть раз в 24 часа!");
+      return;
+  }
+  localStorage.setItem(`freeCase_${TELEGRAM_USER_ID}`, now);
 
   logoBar.style.display="none";
   casesBar.style.display="none";
