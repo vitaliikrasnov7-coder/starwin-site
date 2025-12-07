@@ -315,9 +315,8 @@ if(TELEGRAM_USER_ID){
       <div>ID: ${TELEGRAM_USER_ID}</div>
     `;
 }else{
-    profileContainer.innerHTML = <div style="color:#fff">Профиль не найден</div>;
+    profileContainer.innerHTML = `<div style="color:#fff">Профиль не найден</div>`;
 }
-
 
 /* ========== ДАННЫЕ ДЛЯ КЕЙСА ========== */
 const FREE_CASE_ITEMS = [
@@ -333,23 +332,28 @@ const FREE_CASE_ITEMS = [
   { name:"Red 9",rarity:"red",img:"../IMG/IMG_2003.WEBP" },
 ];
 
-  /* СПИСОК ПРЕДМЕТОВ */
-  const itemsList = document.getElementById("itemsList");
-  FREE_CASE_ITEMS.forEach(it=>{
-    let slot = document.createElement("div");
-    slot.className = "item-slot";
-    slot.innerHTML = `<img src="${it.img}"><div class="rarity ${it.rarity}"></div>`;
-    itemsList.appendChild(slot);
-  });
+/* ========== АНИМАЦИЯ ШАПКИ ========== */
+const logoBar = document.getElementById("logoBar");
+const casesBar = document.getElementById("casesBar");
+
+window.addEventListener("scroll", ()=>{
+  let y = Math.min(window.scrollY,200);
+  let o = 1 - y/200;
+  logoBar.style.transform = `translate(-50%, -${y}px)`;
+  logoBar.style.opacity = o;
+  casesBar.style.transform = `translate(-50%, -${y}px)`;
+  casesBar.style.opacity = o;
+});
 
 /* ========== ОТКРЫТИЕ КЕЙСА С 24 ЧАСАМИ ========== */
 document.getElementById("freeCase").addEventListener("click",()=>{
-
   const lastOpen = localStorage.getItem(`freeCase_${TELEGRAM_USER_ID}`);
   const now = Date.now();
   if(lastOpen && now - lastOpen < 24*60*60*1000){
-      const remaining = Math.ceil((24*60*60*1000 - (now - lastOpen))/1000/60);
-      alert(`Кейс можно открыть через ${Math.ceil(remaining/60)} ч ${remaining%60} мин`);
+      const remaining = 24*60*60*1000 - (now - lastOpen);
+      const hours = Math.floor(remaining/1000/60/60);
+      const minutes = Math.floor((remaining/1000/60)%60);
+      alert(`Кейс можно открыть через ${hours} ч ${minutes} мин`);
       return;
   }
 
@@ -393,7 +397,7 @@ document.getElementById("freeCase").addEventListener("click",()=>{
   FREE_CASE_ITEMS.forEach(it=>{
     let slot = document.createElement("div");
     slot.className = "item-slot";
-    slot.innerHTML = <img src="${it.img}"><div class="rarity ${it.rarity}"></div>;
+    slot.innerHTML = `<img src="${it.img}"><div class="rarity ${it.rarity}"></div>`;
     itemsList.appendChild(slot);
   });
 
@@ -411,7 +415,7 @@ document.getElementById("freeCase").addEventListener("click",()=>{
   seq.forEach(it=>{
     const d=document.createElement("div");
     d.className="roulette-item";
-    d.innerHTML = <img src="${it.img}">;
+    d.innerHTML = `<img src="${it.img}">`;
     rouletteTrack.appendChild(d);
   });
 
@@ -423,44 +427,10 @@ document.getElementById("freeCase").addEventListener("click",()=>{
 
   let spinning=false;
 
-  /* РУЛЕТКА */
-  const rouletteTrack = document.getElementById("rouletteTrack");
-  const roulette = document.getElementById("roulette");
-  const startOpen = document.getElementById("startOpen");
-  const resultBlock = document.getElementById("resultBlock");
-  const resultTitle = document.getElementById("resultTitle");
-  const actions = resultBlock.querySelector(".result-actions");
-
-  const seq=[];
-  for(let r=0;r<30;r++){
-    FREE_CASE_ITEMS.forEach(it=>seq.push(it));
-  }
-
-  // Блокировка кнопки если уже открыли (24 часа)
-  const alreadyOpened = localStorage.getItem(`freeCase_opened_${TELEGRAM_USER_ID}`);
-/* ========== АНИМАЦИЯ ШАПКИ ========== */
-const logoBar = document.getElementById("logoBar");
-const casesBar = document.getElementById("casesBar");
-
-window.addEventListener("scroll", ()=>{
-  let y = Math.min(window.scrollY,200);
-  let o = 1 - y/200;
-  logoBar.style.transform = `translate(-50%, -${y}px)`;
-  logoBar.style.opacity = o;
-  casesBar.style.transform = `translate(-50%, -${y}px)`;
-  casesBar.style.opacity = o;
-});
-if(alreadyOpened){
-    startOpen.disabled = true;
-    startOpen.textContent = "Открыто";
-    startOpen.onclick = ()=>alert("Кейс можно открыть только раз в 24 часа!");
-  }
-
   startOpen.onclick = ()=>{
     if(spinning) return;
     spinning=true;
     startOpen.disabled=true;
-    localStorage.setItem(`freeCase_opened_${TELEGRAM_USER_ID}`, true);
 
     resultBlock.style.display="none";
 
@@ -484,11 +454,11 @@ if(alreadyOpened){
     },2000);
 
     setTimeout(()=>{
-      resultTitle.textContent = Тебе выпал: ${winItem.name};
+      resultTitle.textContent = `Тебе выпал: ${winItem.name}`;
       resultBlock.style.display="flex";
       spinning=false;
 
-      actions.innerHTML = <button class="result-btn" style="background:#fff;color:#000;">Ок</button>;
+      actions.innerHTML = `<button class="result-btn" style="background:#fff;color:#000;">Ок</button>`;
       actions.querySelector("button").onclick = ()=>{
         resultBlock.style.display="none";
       };
@@ -496,5 +466,6 @@ if(alreadyOpened){
   };
 });
 </script>
+
 </body>
 </html>
