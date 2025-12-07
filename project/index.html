@@ -29,10 +29,14 @@
   .case img.case-image{ width:100%; height:60%; object-fit:cover; margin-bottom:1vh; border-radius:1vw;}
   .case .case-name{ color:#fff; font-size:3vw; text-align:center; font-weight:700; }
 
-  /* Открытый кейс */
-  .case-opened{ position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90vw; max-width:520px; aspect-ratio:5/6; background:#1a1f35; border-radius:3vw; display:flex; flex-direction:column; align-items:center; padding:5vw; z-index:1000; }
-  .case-logo{ position:absolute; top:2vw; left:2vw; cursor:pointer; }
-  .case-logo .logo{ font-size:5vw; transform:skewX(-12deg); }
+  /* Открытый кейс - список предметов */
+.items-list {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:2vw;
+  margin-top:3vh;
+}
 
   .open-button{ margin-top:3vh; padding:2vh 5vw; background:#333; color:#fff; border:none; border-radius:2vw; font-size:4vw; cursor:pointer; }
   .open-button:disabled{ opacity:.5; cursor:not-allowed; }
